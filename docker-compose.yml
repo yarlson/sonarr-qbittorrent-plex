@@ -1,0 +1,34 @@
+version: "3"
+services:
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    volumes:
+      - /opt:/TV
+    ports:
+      - 8989:8989
+    links:
+      - qbittorrent-tv
+
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - /opt:/Plex
+      - /media:/data-media
+      - plex_config:/config
+    network_mode: host
+
+  qbittorrent-tv:
+    container_name: qbittorrent-tv
+    image: wernight/qbittorrent
+    volumes:
+      - /opt:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+
+volumes:
+  plex_config: {}
+
